@@ -1,14 +1,11 @@
 package locations;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class LocationsController {
 //    private List<Location> locations = new ArrayList<>(List.of(
 //            new Location("Fót", 1.1, 2.2),
@@ -23,9 +20,8 @@ public class LocationsController {
     }
 
     @GetMapping("/locations")
-    @ResponseBody
-    public String listLocations() {
-        return locationsService.listLocations().toString();
+    public List<LocationDto> listLocations() {
+        return locationsService.listLocations();
     }
 
 }

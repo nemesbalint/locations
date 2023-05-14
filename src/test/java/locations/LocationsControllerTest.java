@@ -24,11 +24,12 @@ class LocationsControllerTest {
     @Test
     void listLocations() {
         when(locationsService.listLocations()).thenReturn ( new ArrayList<>(List.of(
-                new Location("Fót", 1.1, 2.2),
-                new Location("Dunakeszi", 1.5, 2.5),
-                new Location("Göd", 1.9, 2.0))
+                new LocationDto("Fót", 1.1, 2.2))
         ));
         var message = locationsController.listLocations();
-        assertThat(message).isEqualTo("[Location{id=null, name='Fót', lat=1.1, lon=2.2}, Location{id=null, name='Dunakeszi', lat=1.5, lon=2.5}, Location{id=null, name='Göd', lat=1.9, lon=2.0}]");
+        assertThat(message)
+                .hasSize(1)
+                .extracting(LocationDto::getName)
+                .contains("Fót");
     }
 }
