@@ -1,7 +1,7 @@
 package locations;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
+//import org.modelmapper.ModelMapper;
+//import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
@@ -16,7 +16,9 @@ import java.util.stream.Collectors;
 @Service
 public class LocationsService {
 
-    private ModelMapper modelMapper;
+//    private ModelMapper modelMapper;
+
+    private LocationMapper locationMapper;
 
     private AtomicLong id = new AtomicLong();
 
@@ -26,12 +28,16 @@ public class LocationsService {
             new Location(id.getAndIncrement(), "Vác", 1.91, 2.22))
     );
 
-    public LocationsService(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
+//    public LocationsService(ModelMapper modelMapper) {
+//        this.modelMapper = modelMapper;
+//    }
+
+    public LocationsService(LocationMapper locationMapper) {
+        this.locationMapper = locationMapper;
     }
 
     public List<LocationDto> listLocations(Optional<String> prefix, Optional<Double> minLat) {
-        Type targetTypeList = new TypeToken<List<Location>>(){}.getType();
+//        Type targetTypeList = new TypeToken<List<Location>>(){}.getType();
 
         List<Location> filtered = locations.stream()
                 .filter(e -> (prefix.isEmpty() || e.getName().toLowerCase().startsWith(prefix.get().toLowerCase()))
@@ -39,15 +45,20 @@ public class LocationsService {
                 )
                 .collect(Collectors.toList());
 
-        return modelMapper.map(filtered, targetTypeList);
+//        return modelMapper.map(filtered, targetTypeList);
+        return locationMapper.toDto(filtered);
     }
 
     public LocationDto findLocationById(long id) {
-        return modelMapper.map(locations.stream()
-                .filter(e -> e.getId() == id)
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Location not found: "+id)),
-                LocationDto.class);
+//        return modelMapper.map(locations.stream()
+//                .filter(e -> e.getId() == id)
+//                .findAny()
+//                .orElseThrow(() -> new IllegalArgumentException("Location not found: "+id)),
+//                LocationDto.class);
+        return locationMapper.toDto(locations.stream()
+                        .filter(e -> e.getId() == id)
+                        .findAny()
+                        .orElseThrow(() -> new IllegalArgumentException("Location not found: "+id)));
     }
 
     public LocationDto createLocation(CreateLocationCommand command) {
@@ -57,7 +68,8 @@ public class LocationsService {
                 command.getLat(),
                 command.getLon());
         locations.add(location);
-        return modelMapper.map(location, LocationDto.class);
+//        return modelMapper.map(location, LocationDto.class);
+        return locationMapper.toDto(location);
     }
 
     public LocationDto updateLocation(long id, UpdateLocationCommand command) {
@@ -68,7 +80,8 @@ public class LocationsService {
         location.setName(command.getName());
         location.setLat(command.getLat());
         location.setLon(command.getLon());
-        return modelMapper.map(location, LocationDto.class);
+//        return modelMapper.map(location, LocationDto.class);
+        return locationMapper.toDto(location);
     }
 
     public void deleteLocation(long id) {
