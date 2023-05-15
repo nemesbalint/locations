@@ -49,4 +49,33 @@ public class LocationsService {
                 .orElseThrow(() -> new IllegalArgumentException("Location not found: "+id)),
                 LocationDto.class);
     }
+
+    public LocationDto createLocation(CreateLocationCommand command) {
+        Location location = new Location(
+                id.getAndIncrement(),
+                command.getName(),
+                command.getLat(),
+                command.getLon());
+        locations.add(location);
+        return modelMapper.map(location, LocationDto.class);
+    }
+
+    public LocationDto updateLocation(long id, UpdateLocationCommand command) {
+        Location location = locations.stream()
+                .filter(e->e.getId() == id)
+                .findFirst()
+                .orElseThrow(()->new IllegalArgumentException("Location not found to update:"+id));
+        location.setName(command.getName());
+        location.setLat(command.getLat());
+        location.setLon(command.getLon());
+        return modelMapper.map(location, LocationDto.class);
+    }
+
+    public void deleteLocation(long id) {
+        Location location = locations.stream()
+                .filter(e->e.getId() == id)
+                .findFirst()
+                .orElseThrow(()->new IllegalArgumentException("Location not found to delete:"+id));
+        locations.remove(location);
+    }
 }
