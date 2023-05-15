@@ -58,7 +58,7 @@ public class LocationsService {
         return locationMapper.toDto(locations.stream()
                         .filter(e -> e.getId() == id)
                         .findAny()
-                        .orElseThrow(() -> new IllegalArgumentException("Location not found: "+id)));
+                        .orElseThrow(() -> new LocationNotFoundException("Location not found: "+id)));
     }
 
     public LocationDto createLocation(CreateLocationCommand command) {
@@ -76,7 +76,7 @@ public class LocationsService {
         Location location = locations.stream()
                 .filter(e->e.getId() == id)
                 .findFirst()
-                .orElseThrow(()->new IllegalArgumentException("Location not found to update:"+id));
+                .orElseThrow(()->new LocationNotFoundException("Location not found to update:"+id));
         location.setName(command.getName());
         location.setLat(command.getLat());
         location.setLon(command.getLon());
@@ -88,7 +88,7 @@ public class LocationsService {
         Location location = locations.stream()
                 .filter(e->e.getId() == id)
                 .findFirst()
-                .orElseThrow(()->new IllegalArgumentException("Location not found to delete:"+id));
+                .orElseThrow(()->new LocationNotFoundException("Location not found to delete:"+id));
         locations.remove(location);
     }
 }
