@@ -60,17 +60,17 @@ public class LocationsController {
         locationsService.deleteLocation(id);
     }
 
-    @ExceptionHandler({LocationNotFoundException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ProblemDetail> handleNotFound(LocationNotFoundException e) {
-        ProblemDetail problemDetail =
-                ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-        problemDetail.setType(URI.create("location/not-found"));
-        problemDetail.setTitle("Not found");
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
-                .body(problemDetail);
-    }
+//    @ExceptionHandler({LocationNotFoundException.class})
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    public ResponseEntity<ProblemDetail> handleNotFound(LocationNotFoundException e) {
+//        ProblemDetail problemDetail =
+//                ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+//        problemDetail.setType(URI.create("location/not-found"));
+//        problemDetail.setTitle("Not found");
+//        return ResponseEntity
+//                .status(HttpStatus.NOT_FOUND)
+//                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+//                .body(problemDetail);
+//    }
 
 }
