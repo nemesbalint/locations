@@ -49,6 +49,7 @@ public class LocationsController {
         return locationsService.createLocation(command);
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping("/locations/{id}")
     public LocationDto updateLocation(@PathVariable("id") long id, @RequestBody UpdateLocationCommand command) {
         return locationsService.updateLocation(id, command);
