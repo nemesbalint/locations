@@ -91,4 +91,10 @@ public class LocationsService {
                 .orElseThrow(()->new LocationNotFoundException(id));
         locations.remove(location);
     }
+
+    public void deleteAllLocations() {
+        id = new AtomicLong();
+        locations.clear();
+    }
+
 }
