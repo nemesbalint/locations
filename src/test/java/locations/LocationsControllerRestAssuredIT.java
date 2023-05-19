@@ -1,6 +1,7 @@
 package locations;
 
 import io.restassured.http.ContentType;
+import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,7 @@ public class LocationsControllerRestAssuredIT {
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
                 .body("name", equalTo("Fót"))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"))
                 .log();
         with()
                 .get("/locations")
@@ -60,6 +62,7 @@ public class LocationsControllerRestAssuredIT {
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
                 .body("name", equalTo("Fót"))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"))
                 .log();
 
         with()
@@ -68,13 +71,15 @@ public class LocationsControllerRestAssuredIT {
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
                 .body("name", equalTo("Dunakeszi"))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"))
                 .log();
 
         with()
                 .get("/locations/{id}",1)
                 .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("name", equalTo("Dunakeszi"));
+                .body("name", equalTo("Dunakeszi"))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"));
     }
 
     @Test
@@ -85,6 +90,7 @@ public class LocationsControllerRestAssuredIT {
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
                 .body("name", equalTo("Dunakeszi"))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"))
                 .log();
     }
 
@@ -96,6 +102,7 @@ public class LocationsControllerRestAssuredIT {
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
                 .body("name", equalTo("Dunakeszi"))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"))
                 .log();
 
         with()
@@ -104,6 +111,7 @@ public class LocationsControllerRestAssuredIT {
                 .then()
                 .statusCode(HttpStatus.ACCEPTED.value())
                 .body("name", equalTo("Fót"))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"))
                 .log();
     }
 
@@ -124,5 +132,15 @@ public class LocationsControllerRestAssuredIT {
                 .log();
 
     }
+
+    @Test
+    public void validate() {
+        with()
+                .body(new CreateLocationCommand("Dunakeszi", 1.1, 2.1))
+                .post("/locations")
+                .then()
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"));
+    }
+
 
 }
