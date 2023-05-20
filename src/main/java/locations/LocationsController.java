@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,14 +36,23 @@ public class LocationsController {
         this.locationsService = locationsService;
     }
 
-    @GetMapping("/locations")
+    @GetMapping(value = "/locations", produces = {MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "Get a list of locations", description = "Retrieve a list of locations based on optional parameters.")
     @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LocationDto.class)))
     public List<LocationDto> listLocations( @RequestParam(required = false) @Schema(description = "Optional prefix string to filter locations by name.") Optional<String> prefix,
                                             @RequestParam(required = false) @Schema(description = "Optional minimum latitude value to filter locations by.") Optional<Double> minLat) {
         return locationsService.listLocations(prefix, minLat);
     }
-    @GetMapping("/locations/{id}")
+
+    @GetMapping(value = "/locations2", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @Operation(summary = "Get a list of locations as json or xml", description = "Retrieve a list of locations as json or xml based on optional parameters.")
+    @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LocationDto.class)))
+    public LocationsDto listLocationsAsJsonAndXml( @RequestParam(required = false) @Schema(description = "Optional prefix string to filter locations by name.") Optional<String> prefix,
+                                            @RequestParam(required = false) @Schema(description = "Optional minimum latitude value to filter locations by.") Optional<Double> minLat) {
+        return new LocationsDto(locationsService.listLocations(prefix, minLat));
+    }
+
+    @GetMapping(value = "/locations/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @Operation(summary = "Get a location by ID", description = "Retrieve a location based on its ID.")
     @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LocationDto.class)))
     @ApiResponse(responseCode = "404", description = "Location not found")
@@ -52,7 +62,7 @@ public class LocationsController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/locations")
+    @PostMapping(value = "/locations", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @Operation(summary = "Create a new location", description = "Create a new location based on the provided data.")
     @ApiResponse(responseCode = "201", description = "Location created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LocationDto.class)))
     public LocationDto createLocation(
@@ -61,7 +71,7 @@ public class LocationsController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PutMapping("/locations/{id}")
+    @PutMapping(value = "/locations/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @Operation(summary = "Update a location", description = "Update an existing location based on the provided data.")
     @ApiResponse(responseCode = "202", description = "Location updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LocationDto.class)))
     @ApiResponse(responseCode = "404", description = "Location not found")

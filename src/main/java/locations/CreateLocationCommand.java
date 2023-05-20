@@ -1,6 +1,7 @@
 package locations;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Represents a command to create a location.")
+@XmlRootElement
 public class CreateLocationCommand {
     @Schema(description = "The name of the location.", required = true)
     private String name;

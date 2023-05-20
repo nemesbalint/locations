@@ -55,6 +55,24 @@ public class LocationsControllerRestAssuredIT {
     }
 
     @Test
+    public void testListLocations2() {
+        with()
+                .body(new CreateLocationCommand("Fót", 1.1, 2.1))
+                .post("/locations")
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .body("name", equalTo("Fót"))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"))
+                .log();
+        with()
+                .get("/locations2")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("locations[0].name", equalTo("Fót"))
+                .body("size()", equalTo(1));
+    }
+
+    @Test
     public void testFindLocationById() {
         with()
                 .body(new CreateLocationCommand("Fót", 1.1, 2.1))
