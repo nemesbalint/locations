@@ -31,7 +31,7 @@ public class LocationsControllerXmlRestAssuredIT {
         RestAssuredMockMvc.mockMvc(mockMvc);
         RestAssuredMockMvc.requestSpecification =
                 given()
-                        .contentType(ContentType.JSON)
+                        .contentType(ContentType.XML)
                         .accept(ContentType.XML);
 
         locationsService.deleteAllLocations();
@@ -56,11 +56,11 @@ public class LocationsControllerXmlRestAssuredIT {
     @Test
     public void testFindLocationById() {
         with()
-                .body(new CreateLocationCommand("Fót", 1.1, 2.1))
+                .body(new CreateLocationCommand("Fot", 1.1, 2.1))
                 .post("/locations")
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("location.name", equalTo("Fót"))
+                .body("location.name", equalTo("Fot"))
                 .log();
 
         with()
@@ -78,4 +78,55 @@ public class LocationsControllerXmlRestAssuredIT {
                 .body("location.name", equalTo("Dunakeszi"))
                 ;
     }
+
+    @Test
+    public void testCreateLocations() {
+        with()
+                .body(new CreateLocationCommand("Dunakeszi", 2.1, 3.1))
+                .post("/locations")
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .body("location.name", equalTo("Dunakeszi"))
+                .log();
+    }
+
+    @Test
+    public void testUpdateLocation() {
+        with()
+                .body(new CreateLocationCommand("Dunakeszi", 2.1, 3.1))
+                .post("/locations")
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .body("location.name", equalTo("Dunakeszi"))
+                .log();
+
+        with()
+                .body(new UpdateLocationCommand("Fot", 1.1, 2.1))
+                .put("/locations/{id}", 0)
+                .then()
+                .statusCode(HttpStatus.ACCEPTED.value())
+                .body("location.name", equalTo("Fot"))
+                .log();
+    }
+
+    @Test
+    public void testDeleteLocation() {
+        with()
+                .body(new CreateLocationCommand("Dunakeszi", 2.1, 3.1))
+                .post("/locations")
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .body("location.name", equalTo("Dunakeszi"))
+                .log();
+
+        with()
+                .delete("/locations/{id}", 0)
+                .then()
+                .statusCode(HttpStatus.NO_CONTENT.value())
+                .log();
+
+    }
+
+
+
 }

@@ -1,6 +1,7 @@
 package locations;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "Represents a command to update a location.")
+@XmlRootElement
 public class UpdateLocationCommand {
     @Schema(description = "The new name of the location")
     private String name;
