@@ -1,18 +1,15 @@
 package locations;
 
-//import org.modelmapper.ModelMapper;
-//import org.modelmapper.TypeToken;
-import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-//@Service
 @Service
 public class LocationsService {
 
@@ -22,13 +19,17 @@ public class LocationsService {
 
     private AtomicLong id = new AtomicLong();
 
+    @Value("${locations.name-auto-uppercase}")
+    private boolean nameAutoUpperCase;
+
     private List<Location> locations = new ArrayList<>(List.of(
             new Location(id.getAndIncrement(), "Fót", 1.1, 2.2),
             new Location(id.getAndIncrement(), "Dunakeszi", 1.5, 2.5),
             new Location(id.getAndIncrement(), "Vác", 1.91, 2.22))
     );
 
-//    public LocationsService(ModelMapper modelMapper) {
+
+    //    public LocationsService(ModelMapper modelMapper) {
 //        this.modelMapper = modelMapper;
 //    }
 
@@ -64,7 +65,7 @@ public class LocationsService {
     public LocationDto createLocation(CreateLocationCommand command) {
         Location location = new Location(
                 id.getAndIncrement(),
-                command.getName(),
+                nameAutoUpperCase ? command.getName().toUpperCase() : command.getName(),
                 command.getLat(),
                 command.getLon());
         locations.add(location);
@@ -77,7 +78,7 @@ public class LocationsService {
                 .filter(e->e.getId() == id)
                 .findFirst()
                 .orElseThrow(()->new LocationNotFoundException(id));
-        location.setName(command.getName());
+        location.setName( nameAutoUpperCase ? command.getName().toUpperCase() : command.getName());
         location.setLat(command.getLat());
         location.setLon(command.getLon());
 //        return modelMapper.map(location, LocationDto.class);
