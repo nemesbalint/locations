@@ -19,9 +19,11 @@ public class UpdateLocationCommand {
     @NotBlank
     private String name;
     @Schema(description = "The new latitude of the location", example = "40.7128")
-    @Min(value = -90) @Max(value = 90)
+    //@Min(value = -90) @Max(value = 90)
+    @Coordinate
     private double lat;
     @Schema(description = "The new longitude of the location", example = "-74.0060")
-    @Min(value = -180) @Max(value = 180)
+    //@Min(value = -180) @Max(value = 180)
+    @Coordinate(minValue = -180, maxValue = 180)
     private double lon;
 }
