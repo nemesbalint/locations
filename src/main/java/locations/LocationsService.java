@@ -2,6 +2,7 @@ package locations;
 
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class LocationsService {
     private AtomicLong id = new AtomicLong();
     private LocationMapper locationMapper;
@@ -26,24 +28,18 @@ public class LocationsService {
         this.locationsProperties = locationsProperties;
     }
 
-//    @Value("${locations.name-auto-uppercase}")
-//    private boolean nameAutoUpperCase;
-
-//    public LocationsService(LocationMapper locationMapper) {
-//        this.locationMapper = locationMapper;
-//    }
-
     public List<LocationDto> listLocations(Optional<String> prefix, Optional<Double> minLat) {
         List<Location> filtered = locations.stream()
                 .filter(e -> (prefix.isEmpty() || e.getName().toLowerCase().startsWith(prefix.get().toLowerCase()))
                         && (minLat.isEmpty() || e.getLat() >= minLat.get())
                 )
                 .collect(Collectors.toList());
-
+        log.debug("listLocations called with prefix {}, result count is {}",prefix, filtered.size());
         return locationMapper.toDto(filtered);
     }
 
     public LocationDto findLocationById(long id) {
+        log.debug("findLocationById called with id: {} ", id);
         return locationMapper.toDto(locations.stream()
                         .filter(e -> e.getId() == id)
                         .findAny()
@@ -51,6 +47,7 @@ public class LocationsService {
     }
 
     public LocationDto createLocation(CreateLocationCommand command) {
+        log.debug("createLocation called with command: {}", command);
         Location location = new Location(
                 id.getAndIncrement(),
                 locationsProperties.isNameAutoUpperCase()? command.getName().toUpperCase() : command.getName(),
@@ -61,6 +58,7 @@ public class LocationsService {
     }
 
     public LocationDto updateLocation(long id, UpdateLocationCommand command) {
+        log.debug("updateLocation called with command: {}", command);
         Location location = locations.stream()
                 .filter(e->e.getId() == id)
                 .findFirst()
@@ -72,6 +70,7 @@ public class LocationsService {
     }
 
     public void deleteLocation(long id) {
+        log.debug("deleteLocation called with id: {}", id);
         Location location = locations.stream()
                 .filter(e->e.getId() == id)
                 .findFirst()
@@ -80,6 +79,7 @@ public class LocationsService {
     }
 
     public void deleteAllLocations() {
+        log.debug("deleteAllLocations called");
         id = new AtomicLong();
         locations.clear();
     }

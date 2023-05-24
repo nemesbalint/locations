@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+logging:
+  level:
+    locations: debug
+locations:
+  name-auto-uppercase: true
