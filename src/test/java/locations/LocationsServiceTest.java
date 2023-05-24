@@ -12,7 +12,9 @@ class LocationsServiceTest {
     @Test
     void listLocations() {
 //        LocationsService locationsService = new LocationsService(new ModelMapper());
-        LocationsService locationsService = new LocationsService(new LocationMapperImpl());
+        LocationsProperties locationsProperties = new LocationsProperties();
+        locationsProperties.setNameAutoUpperCase(false);
+        LocationsService locationsService = new LocationsService(new LocationMapperImpl(), locationsProperties);
         var locations = locationsService.listLocations(
                 Optional.of(""), Optional.empty());
         assertThat(locations.size()).isEqualTo(3);
