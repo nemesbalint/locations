@@ -2,6 +2,8 @@ spring:
   config:
     activate:
       on-profile: prod
+  jpa:
+    show-sql: true
 
 locations:
   name-auto-uppercase: true
