@@ -2,8 +2,11 @@ spring:
   config:
     activate:
       on-profile: prod
+
+locations:
+  name-auto-uppercase: true
+
 logging:
   level:
     locations: debug
-locations:
-  name-auto-uppercase: true
+

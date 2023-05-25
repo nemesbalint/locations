@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties
+@ConfigurationProperties(prefix = "locations")
 public class LocationsProperties {
     private boolean nameAutoUpperCase;
 }
