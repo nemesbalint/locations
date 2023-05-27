@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
@@ -13,18 +14,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(statements = "delete from locations")
 public class LocationsControllerRestTemplateIT {
 
     @Autowired
     TestRestTemplate template;
 
-    @Autowired
-    LocationsService locationsService;
-
     @Test
     public void testListLocations() {
-
-        locationsService.deleteAllLocations();
 
         template.postForObject(
                 "/locations",
@@ -54,8 +51,6 @@ public class LocationsControllerRestTemplateIT {
     @Test
     public void testFindLocationById() {
 
-        locationsService.deleteAllLocations();
-
         template.postForObject(
                 "/locations",
                 new CreateLocationCommand("Fót", 1.1, 2.1),
@@ -71,7 +66,7 @@ public class LocationsControllerRestTemplateIT {
 
         LocationDto locationDto =
                 template.exchange(
-                        "/locations/1",
+                        "/locations/2",
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<LocationDto>() {}
@@ -82,8 +77,6 @@ public class LocationsControllerRestTemplateIT {
 
     @Test
     public void testCreateLocation() {
-
-        locationsService.deleteAllLocations();
 
         LocationDto locationDto =
                 template.postForObject(
@@ -99,8 +92,6 @@ public class LocationsControllerRestTemplateIT {
     @Test
     public void testUpdateLocation() {
 
-        locationsService.deleteAllLocations();
-
         template.postForObject(
                 "/locations",
                 new CreateLocationCommand("Fót", 1.1, 2.1),
@@ -108,14 +99,14 @@ public class LocationsControllerRestTemplateIT {
         );
 
         template.put(
-                "/locations/0",
+                "/locations/1",
                 new CreateLocationCommand("Dunakeszi", 1.1, 2.1),
                 LocationDto.class
         );
 
         LocationDto locationDto =
                 template.exchange(
-                        "/locations/0",
+                        "/locations/1",
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<LocationDto>() {}
@@ -126,7 +117,6 @@ public class LocationsControllerRestTemplateIT {
 
     @Test
     public void testDeleteLocation() {
-        locationsService.deleteAllLocations();
 
         template.postForObject(
                 "/locations",
@@ -135,12 +125,12 @@ public class LocationsControllerRestTemplateIT {
         );
 
         template.put(
-                "/locations/0",
+                "/locations/1",
                 new CreateLocationCommand("Dunakeszi", 1.1, 2.1),
                 LocationDto.class
         );
 
-        template.delete("/location/0");
+        template.delete("/location/1");
 
         List<LocationDto> locationDtos =
                 template.exchange(
