@@ -2,8 +2,16 @@ spring:
   config:
     activate:
       on-profile: prod
+
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: create
+
+  datasource:
+    url: jdbc:mariadb://localhost/locations
+    username: locations
+    password: locations
 
 locations:
   name-auto-uppercase: true
