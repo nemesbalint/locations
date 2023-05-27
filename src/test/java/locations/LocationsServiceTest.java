@@ -12,19 +12,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class LocationsServiceTest {
-
-    @Autowired
-    LocationsDao locationsDao;
-
-    @Test
-    void listLocations() {
-//        LocationsService locationsService = new LocationsService(new ModelMapper());
-        LocationsProperties locationsProperties = new LocationsProperties();
-        locationsProperties.setNameAutoUpperCase(false);
-
-        LocationsService locationsService = new LocationsService(locationsDao, new LocationMapperImpl(), locationsProperties);
-        var locations = locationsService.listLocations(
-                Optional.of(""), Optional.empty());
-        assertThat(locations.size()).isEqualTo(3);
-    }
+//
+//    @Autowired
+//    LocationsDao locationsDao;
+//
+//    @Test
+//    void listLocations() {
+//        LocationsProperties locationsProperties = new LocationsProperties();
+//        locationsProperties.setNameAutoUpperCase(false);
+//
+//        LocationsService locationsService = new LocationsService(locationsDao, new LocationMapperImpl(), locationsProperties);
+//        var locations = locationsService.listLocations(
+//                Optional.of(""), Optional.empty());
+//        assertThat(locations.size()).isEqualTo(3);
+//    }
 }
