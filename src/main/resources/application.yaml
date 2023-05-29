@@ -3,11 +3,16 @@ spring:
     activate:
       on-profile: prod
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:18080/auth/realms/LocationsRealm
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: none
-
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
@@ -16,6 +21,12 @@ spring:
     url: jdbc:mariadb://localhost/locations
     username: locations
     password: locations
+
+jwt:
+  auth:
+    converter:
+      resource-id: locations-app
+      principal-attribute: preferred_username
 
 locations:
   name-auto-uppercase: true
