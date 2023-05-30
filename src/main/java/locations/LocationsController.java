@@ -44,7 +44,8 @@ public class LocationsController {
         return locationsService.listLocations(prefix, minLat);
     }
 
-    @GetMapping(value = "/locations2", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(value = "/locations2", produces = {MediaType.APPLICATION_JSON_VALUE,  "text/xml;charset=UTF-8"},
+            consumes = {MediaType.APPLICATION_JSON_VALUE,  "text/xml;charset=UTF-8"})
     @Operation(summary = "Get a list of locations as json or xml", description = "Retrieve a list of locations as json or xml based on optional parameters.")
     @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LocationDto.class)))
     public LocationsDto listLocationsAsJsonAndXml( @RequestParam(required = false) @Schema(description = "Optional prefix string to filter locations by name.") Optional<String> prefix,
@@ -52,7 +53,8 @@ public class LocationsController {
         return new LocationsDto(locationsService.listLocations(prefix, minLat));
     }
 
-    @GetMapping(value = "/locations/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(value = "/locations/{id}", produces = {MediaType.APPLICATION_JSON_VALUE,  "text/xml;charset=UTF-8"},
+            consumes = {MediaType.APPLICATION_JSON_VALUE,  "text/xml;charset=UTF-8"})
     @Operation(summary = "Get a location by ID", description = "Retrieve a location based on its ID.")
     @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LocationDto.class)))
     @ApiResponse(responseCode = "404", description = "Location not found")
@@ -62,7 +64,9 @@ public class LocationsController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/locations", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @PostMapping(value = "/locations",
+            produces = {MediaType.APPLICATION_JSON_VALUE,  "text/xml;charset=UTF-8"},
+            consumes = {MediaType.APPLICATION_JSON_VALUE,  "text/xml;charset=UTF-8"})
     @Operation(summary = "Create a new location", description = "Create a new location based on the provided data.")
     @ApiResponse(responseCode = "201", description = "Location created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LocationDto.class)))
     public LocationDto createLocation(
@@ -71,7 +75,8 @@ public class LocationsController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PutMapping(value = "/locations/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @PutMapping(value = "/locations/{id}", produces = {MediaType.APPLICATION_JSON_VALUE,  "text/xml;charset=UTF-8"},
+            consumes = {MediaType.APPLICATION_JSON_VALUE,  "text/xml;charset=UTF-8"})
     @Operation(summary = "Update a location", description = "Update an existing location based on the provided data.")
     @ApiResponse(responseCode = "202", description = "Location updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = LocationDto.class)))
     @ApiResponse(responseCode = "404", description = "Location not found")
@@ -90,18 +95,5 @@ public class LocationsController {
             @PathVariable("id") @Schema(description = "The ID of the location to delete.") long id) {
         locationsService.deleteLocation(id);
     }
-
-//    @ExceptionHandler({LocationNotFoundException.class})
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    public ResponseEntity<ProblemDetail> handleNotFound(LocationNotFoundException e) {
-//        ProblemDetail problemDetail =
-//                ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-//        problemDetail.setType(URI.create("location/not-found"));
-//        problemDetail.setTitle("Not found");
-//        return ResponseEntity
-//                .status(HttpStatus.NOT_FOUND)
-//                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
-//                .body(problemDetail);
-//    }
 
 }

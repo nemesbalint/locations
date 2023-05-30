@@ -1,9 +1,6 @@
 package locations;
 
-import io.restassured.http.ContentType;
-import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.path.xml.XmlPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +28,8 @@ public class LocationsControllerXmlRestAssuredIT {
         RestAssuredMockMvc.mockMvc(mockMvc);
         RestAssuredMockMvc.requestSpecification =
                 given()
-                        .contentType(ContentType.XML)
-                        .accept(ContentType.XML);
+                        .contentType("text/xml;charset=UTF-8")
+                        .accept("text/xml;charset=UTF-8");
 
         locationsService.deleteAllLocations();
     }
@@ -56,11 +53,11 @@ public class LocationsControllerXmlRestAssuredIT {
     @Test
     public void testFindLocationById() {
         with()
-                .body(new CreateLocationCommand("Fot", 1.1, 2.1))
+                .body(new CreateLocationCommand("Fót", 1.1, 2.1))
                 .post("/locations")
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("location.name", equalTo("Fot"))
+                .body("location.name", equalTo("Fót"))
                 .log();
 
         with()
@@ -82,11 +79,11 @@ public class LocationsControllerXmlRestAssuredIT {
     @Test
     public void testCreateLocations() {
         with()
-                .body(new CreateLocationCommand("Dunakeszi", 2.1, 3.1))
+                .body(new CreateLocationCommand("Fót", 2.1, 3.1))
                 .post("/locations")
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("location.name", equalTo("Dunakeszi"))
+                .body("location.name", equalTo("Fót"))
                 .log();
     }
 
@@ -101,22 +98,22 @@ public class LocationsControllerXmlRestAssuredIT {
                 .log();
 
         with()
-                .body(new UpdateLocationCommand("Fot", 1.1, 2.1))
+                .body(new UpdateLocationCommand("Fót", 1.1, 2.1))
                 .put("/locations/{id}", 0)
                 .then()
                 .statusCode(HttpStatus.ACCEPTED.value())
-                .body("location.name", equalTo("Fot"))
+                .body("location.name", equalTo("Fót"))
                 .log();
     }
 
     @Test
     public void testDeleteLocation() {
         with()
-                .body(new CreateLocationCommand("Dunakeszi", 2.1, 3.1))
+                .body(new CreateLocationCommand("Fót", 2.1, 3.1))
                 .post("/locations")
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("location.name", equalTo("Dunakeszi"))
+                .body("location.name", equalTo("Fót"))
                 .log();
 
         with()
