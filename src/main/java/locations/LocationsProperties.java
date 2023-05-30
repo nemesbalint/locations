@@ -13,4 +13,5 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "locations")
 public class LocationsProperties {
     private boolean nameAutoUpperCase;
+    private String eventStoreUrl;
 }

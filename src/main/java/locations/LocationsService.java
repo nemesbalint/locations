@@ -1,5 +1,7 @@
 package locations;
 
+import eventstore.CreateEventCommand;
+import eventstore.EventDto;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ public class LocationsService {
     private LocationsRepository repository;
     private LocationMapper locationMapper;
     private LocationsProperties locationsProperties;
+    private EventStoreGateway eventStoreGateway;
 
     public List<LocationDto> listLocations(Optional<String> prefix, Optional<Double> minLat) {
         List<Location> filtered = repository.findAll().stream()
@@ -50,10 +53,14 @@ public class LocationsService {
         location.setName( locationsProperties.isNameAutoUpperCase() ? command.getName().toUpperCase() : command.getName());
         location.setLat(command.getLat());
         location.setLon(command.getLon());
+        EventDto eventDto = eventStoreGateway.createEvent(new CreateEventCommand("Locations updated: "+id));
+        log.debug("updateLocation createEvent result {}", eventDto);
         return locationMapper.toDto(location);
     }
 
     public void deleteLocation(long id) {
+        EventDto eventDto = eventStoreGateway.createEvent(new CreateEventCommand("Locations deleted: "+id));
+        log.debug("deleteLocation createEvent result {}", eventDto);
         log.debug("deleteLocation called with id: {}", id);
         repository.deleteById(id);
     }

@@ -19,6 +19,7 @@ spring:
 
 locations:
   name-auto-uppercase: true
+  event-store-url: http://localhost:8081/api/events
 
 logging:
   level:
