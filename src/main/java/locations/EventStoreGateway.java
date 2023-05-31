@@ -10,17 +10,6 @@ import reactor.core.publisher.Mono;
 @Service
 @Slf4j
 public class EventStoreGateway {
-//
-//    private final RestTemplate restTemplate;
-//
-//
-//    public EventStoreGateway(RestTemplateBuilder builder) {
-//        this.restTemplate = builder.build();
-//    }
-//
-//    public EventDto createEvent (CreateEventCommand command) {
-//        return restTemplate.postForObject("http://localhost:8081/api/events", command, EventDto.class);
-//    }
 
     public EventDto createEvent (CreateEventCommand command) {
         return WebClient.create(getBaseUrl("http://localhost:8081/api/events"))
