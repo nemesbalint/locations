@@ -43,6 +43,7 @@ public class LocationsService {
                 command.getLon());
         log.debug("createLocation called with location: {}", location);
         repository.save(location);
+        eventStoreGateway.sendJmsMessage(location.toString());
         return locationMapper.toDto(location);
     }
 
@@ -55,6 +56,7 @@ public class LocationsService {
         location.setLon(command.getLon());
         EventDto eventDto = eventStoreGateway.createEvent(new CreateEventCommand("Locations updated: "+id));
         log.debug("updateLocation createEvent result {}", eventDto);
+        eventStoreGateway.sendJmsMessage(location.toString());
         return locationMapper.toDto(location);
     }
 
@@ -62,6 +64,7 @@ public class LocationsService {
         EventDto eventDto = eventStoreGateway.createEvent(new CreateEventCommand("Locations deleted: "+id));
         log.debug("deleteLocation createEvent result {}", eventDto);
         log.debug("deleteLocation called with id: {}", id);
+        eventStoreGateway.sendJmsMessage("id: "+id);
         repository.deleteById(id);
     }
 
