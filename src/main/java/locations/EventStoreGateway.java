@@ -4,6 +4,7 @@ import eventstore.CreateEventCommand;
 import eventstore.EventDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -32,6 +33,12 @@ public class EventStoreGateway {
 
     public void sendJmsMessage(String message) {
         jmsTemplate.convertAndSend("eventsQueue", new CreateEventCommand("Location modified: "+message));
+        jmsTemplate.convertAndSend("internalQueue", new CreateEventCommand("Location modified: "+message));
+    }
+
+    @JmsListener(destination = "internalQueue")
+    public void processMessage(CreateEventCommand command) {
+        log.info("Message has arrived: "+command.getMessage());
     }
 
 }
