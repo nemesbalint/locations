@@ -44,4 +44,6 @@ locations:
 logging:
   level:
     locations: debug
+  file:
+    name: locations.log
 
