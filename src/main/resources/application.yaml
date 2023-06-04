@@ -17,6 +17,19 @@ spring:
     username: locations
     password: locations
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    env:
+      show-values: always
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+
 locations:
   name-auto-uppercase: true
   event-store-url: http://localhost:8081/api/events
