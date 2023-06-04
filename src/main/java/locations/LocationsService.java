@@ -7,10 +7,13 @@ import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.actuate.audit.listener.AuditApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,7 @@ public class LocationsService {
     private LocationsProperties locationsProperties;
     private EventStoreGateway eventStoreGateway;
     private MeterRegistry meterRegistry;
+    private ApplicationEventPublisher eventPublisher;
 
     @PostConstruct
     public void init() {
@@ -59,6 +63,8 @@ public class LocationsService {
         meterRegistry.counter(LOCATIONS_CREATED_COUNT).increment();
         repository.save(location);
         eventStoreGateway.sendJmsMessage(location.toString());
+        eventPublisher.publishEvent(new AuditApplicationEvent("anonymous", "location_has_been_created",
+                Map.of("name", command.getName(), "lat", command.getLat(), "lon", command.getLon())));
         return locationMapper.toDto(location);
     }
 
