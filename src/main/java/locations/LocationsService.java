@@ -2,10 +2,14 @@ package locations;
 
 import eventstore.CreateEventCommand;
 import eventstore.EventDto;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,10 +19,20 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class LocationsService {
 
+    public static final String LOCATIONS_CREATED_COUNT = "locations.created";
     private LocationsRepository repository;
     private LocationMapper locationMapper;
     private LocationsProperties locationsProperties;
     private EventStoreGateway eventStoreGateway;
+    private MeterRegistry meterRegistry;
+
+    @PostConstruct
+    public void init() {
+        Counter.builder(LOCATIONS_CREATED_COUNT)
+                .baseUnit("location")
+                .description("Number of locations created")
+                .register(meterRegistry);
+    }
 
     public List<LocationDto> listLocations(Optional<String> prefix, Optional<Double> minLat) {
         List<Location> filtered = repository.findAll().stream()
@@ -42,6 +56,7 @@ public class LocationsService {
                 command.getLat(),
                 command.getLon());
         log.debug("createLocation called with location: {}", location);
+        meterRegistry.counter(LOCATIONS_CREATED_COUNT).increment();
         repository.save(location);
         eventStoreGateway.sendJmsMessage(location.toString());
         return locationMapper.toDto(location);
