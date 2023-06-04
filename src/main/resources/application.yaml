@@ -29,6 +29,13 @@ management:
       show-details: always
     shutdown:
       enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  appname: Locations
+  contact: info@example.com
 
 locations:
   name-auto-uppercase: true
