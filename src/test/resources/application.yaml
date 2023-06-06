@@ -11,10 +11,10 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
 
-  datasource:
-    url: jdbc:mariadb://localhost:3306/locations
-    username: locations
-    password: locations
+#  datasource:
+#    url: jdbc:mariadb://localhost:3306/locations
+#    username: locations
+#    password: locations
 
 locations:
   name-auto-uppercase: false

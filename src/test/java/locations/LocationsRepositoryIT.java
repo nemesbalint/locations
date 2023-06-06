@@ -20,14 +20,14 @@ public class LocationsRepositoryIT {
         repository.save(location);
 
         location = new Location("Dunakeszi", 2.1, 3.1);
-        repository.save(location);
+        location = repository.save(location);
 
-        location = repository.findById(1L).orElseThrow(()-> new IllegalArgumentException("location not found"));
+        location = repository.findById(location.getId()).orElseThrow(()-> new IllegalArgumentException("location not found"));
 
         assertThat(location)
                 .extracting(Location::getName)
                 .toString()
-                .startsWith("Fót");
+                .startsWith("Dunakeszi");
     }
 
 
@@ -85,12 +85,12 @@ public class LocationsRepositoryIT {
     @Test
     public void testDeleteById() {
         var location = new Location("Fót", 1.1, 2.1);
-        repository.save(location);
+        var locationToDelete = repository.save(location);
 
         location = new Location("Dunakeszi", 2.1, 3.1);
         repository.save(location);
 
-        repository.deleteById(1L);
+        repository.deleteById(locationToDelete.getId());
 
         var locations = repository.findAll();
 

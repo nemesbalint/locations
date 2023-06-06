@@ -72,7 +72,7 @@ public class LocationsControllerXmlRestAssuredIT {
                 .log();
 
         with()
-                .get("/locations/{id}",1)
+                .get("/locations/{id}",4)
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("location.name", equalTo("Dunakeszi"))
@@ -102,7 +102,7 @@ public class LocationsControllerXmlRestAssuredIT {
 
         with()
                 .body(new UpdateLocationCommand("Fot", 1.1, 2.1))
-                .put("/locations/{id}", 0)
+                .put("/locations/{id}", 6)
                 .then()
                 .statusCode(HttpStatus.ACCEPTED.value())
                 .body("location.name", equalTo("Fot"))

@@ -26,9 +26,9 @@ public class LocationsService {
     private LocationsRepository repository;
     private LocationMapper locationMapper;
     private LocationsProperties locationsProperties;
-    private EventStoreGateway eventStoreGateway;
+    //private EventStoreGateway eventStoreGateway;
     private MeterRegistry meterRegistry;
-    private ApplicationEventPublisher eventPublisher;
+    //private ApplicationEventPublisher eventPublisher;
 
     @PostConstruct
     public void init() {
@@ -61,10 +61,11 @@ public class LocationsService {
                 command.getLon());
         log.debug("createLocation called with location: {}", location);
         meterRegistry.counter(LOCATIONS_CREATED_COUNT).increment();
-        repository.save(location);
-        eventStoreGateway.sendJmsMessage(location.toString());
-        eventPublisher.publishEvent(new AuditApplicationEvent("anonymous", "location_has_been_created",
-                Map.of("name", command.getName(), "lat", command.getLat(), "lon", command.getLon())));
+        location = repository.save(location);
+        log.debug("createLocation returned with location: {}", location);
+//        eventStoreGateway.sendJmsMessage(location.toString());
+//        eventPublisher.publishEvent(new AuditApplicationEvent("anonymous", "location_has_been_created",
+//                Map.of("name", command.getName(), "lat", command.getLat(), "lon", command.getLon())));
         return locationMapper.toDto(location);
     }
 
@@ -75,17 +76,17 @@ public class LocationsService {
         location.setName( locationsProperties.isNameAutoUpperCase() ? command.getName().toUpperCase() : command.getName());
         location.setLat(command.getLat());
         location.setLon(command.getLon());
-        EventDto eventDto = eventStoreGateway.createEvent(new CreateEventCommand("Locations updated: "+id));
-        log.debug("updateLocation createEvent result {}", eventDto);
-        eventStoreGateway.sendJmsMessage(location.toString());
+//        EventDto eventDto = eventStoreGateway.createEvent(new CreateEventCommand("Locations updated: "+id));
+//        log.debug("updateLocation createEvent result {}", eventDto);
+//        eventStoreGateway.sendJmsMessage(location.toString());
         return locationMapper.toDto(location);
     }
 
     public void deleteLocation(long id) {
-        EventDto eventDto = eventStoreGateway.createEvent(new CreateEventCommand("Locations deleted: "+id));
-        log.debug("deleteLocation createEvent result {}", eventDto);
+//        EventDto eventDto = eventStoreGateway.createEvent(new CreateEventCommand("Locations deleted: "+id));
+//        log.debug("deleteLocation createEvent result {}", eventDto);
         log.debug("deleteLocation called with id: {}", id);
-        eventStoreGateway.sendJmsMessage("id: "+id);
+//        eventStoreGateway.sendJmsMessage("id: "+id);
         repository.deleteById(id);
     }
 

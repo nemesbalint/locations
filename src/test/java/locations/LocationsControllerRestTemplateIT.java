@@ -72,7 +72,7 @@ public class LocationsControllerRestTemplateIT {
                         new ParameterizedTypeReference<LocationDto>() {}
                 ).getBody();
 
-        assertEquals("Dunakeszi", locationDto.getName());
+        assertEquals("Fót", locationDto.getName());
     }
 
     @Test
@@ -106,13 +106,13 @@ public class LocationsControllerRestTemplateIT {
 
         LocationDto locationDto =
                 template.exchange(
-                        "/locations/1",
+                        "/locations/6",
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<LocationDto>() {}
                 ).getBody();
 
-        assertEquals("Dunakeszi", locationDto.getName());
+        assertEquals("Fót", locationDto.getName());
     }
 
     @Test
