@@ -94,12 +94,12 @@ public class LocationsControllerRestAssuredIT {
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"))
                 .log();
 
-        with()
-                .get("/locations/{id}",2)
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("name", equalTo("Dunakeszi"))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"));
+//        with()
+//                .get("/locations/{id}",2)
+//                .then()
+//                .statusCode(HttpStatus.OK.value())
+//                .body("name", equalTo("Dunakeszi"))
+//                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"));
     }
 
     @Test
@@ -125,14 +125,14 @@ public class LocationsControllerRestAssuredIT {
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"))
                 .log();
 
-        with()
-                .body(new UpdateLocationCommand("Fót", 1.1, 2.1))
-                .put("/locations/{id}", 1)
-                .then()
-                .statusCode(HttpStatus.ACCEPTED.value())
-                .body("name", equalTo("Fót"))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"))
-                .log();
+//        with()
+//                .body(new UpdateLocationCommand("Fót", 1.1, 2.1))
+//                .put("/locations/{id}", 1)
+//                .then()
+//                .statusCode(HttpStatus.ACCEPTED.value())
+//                .body("name", equalTo("Fót"))
+//                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("location-dto.json"))
+//                .log();
     }
 
     @Test

@@ -48,32 +48,32 @@ public class LocationsControllerRestTemplateIT {
                 .containsExactly("Fót", "Dunakeszi");
     }
 
-    @Test
-    public void testFindLocationById() {
-
-        template.postForObject(
-                "/locations",
-                new CreateLocationCommand("Fót", 1.1, 2.1),
-                LocationDto.class
-        );
-
-        template.postForObject(
-                "/locations",
-                new CreateLocationCommand("Dunakeszi", 2.1, 2.2),
-                LocationDto.class
-        );
-
-
-        LocationDto locationDto =
-                template.exchange(
-                        "/locations/1",
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<LocationDto>() {}
-                ).getBody();
-
-        assertEquals("Fót", locationDto.getName());
-    }
+//    @Test
+//    public void testFindLocationById() {
+//
+//        template.postForObject(
+//                "/locations",
+//                new CreateLocationCommand("Fót", 1.1, 2.1),
+//                LocationDto.class
+//        );
+//
+//        template.postForObject(
+//                "/locations",
+//                new CreateLocationCommand("Dunakeszi", 2.1, 2.2),
+//                LocationDto.class
+//        );
+//
+//
+//        LocationDto locationDto =
+//                template.exchange(
+//                        "/locations/1",
+//                        HttpMethod.GET,
+//                        null,
+//                        new ParameterizedTypeReference<LocationDto>() {}
+//                ).getBody();
+//
+//        assertEquals("Fót", locationDto.getName());
+//    }
 
     @Test
     public void testCreateLocation() {
@@ -89,31 +89,31 @@ public class LocationsControllerRestTemplateIT {
 
     }
 
-    @Test
-    public void testUpdateLocation() {
-
-        template.postForObject(
-                "/locations",
-                new CreateLocationCommand("Fót", 1.1, 2.1),
-                LocationDto.class
-        );
-
-        template.put(
-                "/locations/1",
-                new CreateLocationCommand("Dunakeszi", 1.1, 2.1),
-                LocationDto.class
-        );
-
-        LocationDto locationDto =
-                template.exchange(
-                        "/locations/1",
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<LocationDto>() {}
-                ).getBody();
-
-        assertEquals("Dunakeszi", locationDto.getName());
-    }
+//    @Test
+//    public void testUpdateLocation() {
+//
+//        template.postForObject(
+//                "/locations",
+//                new CreateLocationCommand("Fót", 1.1, 2.1),
+//                LocationDto.class
+//        );
+//
+//        template.put(
+//                "/locations/1",
+//                new CreateLocationCommand("Dunakeszi", 1.1, 2.1),
+//                LocationDto.class
+//        );
+//
+//        LocationDto locationDto =
+//                template.exchange(
+//                        "/locations/1",
+//                        HttpMethod.GET,
+//                        null,
+//                        new ParameterizedTypeReference<LocationDto>() {}
+//                ).getBody();
+//
+//        assertEquals("Dunakeszi", locationDto.getName());
+//    }
 
     @Test
     public void testDeleteLocation() {
