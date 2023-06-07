@@ -95,7 +95,7 @@ public class LocationsControllerRestAssuredIT {
                 .log();
 
         with()
-                .get("/locations/{id}",11)
+                .get("/locations/{id}",2)
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("name", equalTo("Dunakeszi"))
@@ -127,7 +127,7 @@ public class LocationsControllerRestAssuredIT {
 
         with()
                 .body(new UpdateLocationCommand("Fót", 1.1, 2.1))
-                .put("/locations/{id}", 14)
+                .put("/locations/{id}", 1)
                 .then()
                 .statusCode(HttpStatus.ACCEPTED.value())
                 .body("name", equalTo("Fót"))
@@ -146,7 +146,7 @@ public class LocationsControllerRestAssuredIT {
                 .log();
 
         with()
-                .delete("/locations/{id}", 14)
+                .delete("/locations/{id}", 1)
                 .then()
                 .statusCode(HttpStatus.NO_CONTENT.value())
                 .log();

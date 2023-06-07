@@ -56,11 +56,11 @@ public class LocationsControllerXmlRestAssuredIT {
     @Test
     public void testFindLocationById() {
         with()
-                .body(new CreateLocationCommand("Fot", 1.1, 2.1))
+                .body(new CreateLocationCommand("Dabas", 1.1, 2.1))
                 .post("/locations")
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("location.name", equalTo("Fot"))
+                .body("location.name", equalTo("Dabas"))
                 .log();
 
         with()
@@ -72,7 +72,7 @@ public class LocationsControllerXmlRestAssuredIT {
                 .log();
 
         with()
-                .get("/locations/{id}",4)
+                .get("/locations/{id}",2)
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("location.name", equalTo("Dunakeszi"))
@@ -102,7 +102,7 @@ public class LocationsControllerXmlRestAssuredIT {
 
         with()
                 .body(new UpdateLocationCommand("Fot", 1.1, 2.1))
-                .put("/locations/{id}", 6)
+                .put("/locations/{id}", 1)
                 .then()
                 .statusCode(HttpStatus.ACCEPTED.value())
                 .body("location.name", equalTo("Fot"))
